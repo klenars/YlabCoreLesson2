@@ -128,28 +128,22 @@ public class ComplexExamples {
         int point = 0;
 
         for (int i = 0; i < substring.length(); i++) {
-            for (int j = point; j < text.length(); j++) {
-                if (substring.charAt(i) == text.charAt(j)) {
-                    count++;
-                    point = ++j;
-                    break;
-                }
+            if (text.substring(point).contains(substring.substring(i, i + 1))) {
+                count++;
+                point += text.substring(point).indexOf(substring.charAt(i)) + 1;
             }
         }
         System.out.println(count == substring.length());
     }
 
     private static int[] findNumbers(int[] numbers, int sum) {
-        int[] result = null;
-        for (int i = 0; i < numbers.length; i++) {
-            for (int j = i + 1; j < numbers.length; j++) {
-                if (numbers[i] + numbers[j] == sum) {
-                    result = new int[]{numbers[i], numbers[j]};
-                    break;
-                }
+        Set<Integer> set = new HashSet<>();
+        for (int number : numbers) {
+            if (set.contains(sum - number)) {
+                return new int[]{sum - number, number};
             }
-            if (result != null) break;
+            set.add(number);
         }
-        return result;
+        return new int[]{};
     }
 }
